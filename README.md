@@ -78,6 +78,33 @@ This is the place for you to write reflections:
 
 #### Reflection Publisher-1
 
+##### 1. Do we still need an interface (or trait in Rust) in this BambangShop case, or is a single Model struct enough?  
+In the **Observer Design Pattern**, the **Subscriber** (Observer) is typically defined as an interface (or trait in Rust) to allow multiple different implementations. This makes sense in cases where we expect various types of subscribers that might have different behaviors.  
+
+However, in the **BambangShop** case, we currently have a simple notification system where all subscribers are treated the same—each has a URL and a name. Since all subscribers follow the same structure, we do **not** need a separate trait; a single `Subscriber` struct is sufficient. If in the future we have different types of subscribers with unique behaviors, introducing a trait would be beneficial.  
+
+##### 2. Is using `Vec` (list) sufficient, or is `DashMap` (map/dictionary) necessary for this case?  
+A **Vec** (list) is useful when we have a small, fixed-size collection of items and mostly perform sequential access. However, in this case, `url` in `Subscriber` must be **unique**. If we use a **Vec**, checking for uniqueness requires iterating over all elements, making insertion and deletion inefficient (O(n) complexity).  
+
+By using a **DashMap** (which is a thread-safe HashMap), we ensure:  
+- **Efficient lookups** (O(1) complexity), as we can check if a URL exists instantly.  
+- **Thread safety**, allowing multiple threads to modify subscribers without explicit locking.  
+- **Concurrency support**, which is useful for a web application handling multiple users simultaneously.  
+
+Thus, **DashMap is necessary** for ensuring both uniqueness and efficient concurrent access.  
+
+##### 3. Do we still need DashMap, or can we implement the Singleton pattern instead?  
+The **Singleton Pattern** ensures that only one instance of a variable exists globally. We could implement **SUBSCRIBERS** as a **Singleton using Rust’s `lazy_static!` macro** or the **OnceCell** crate.  
+
+However, the main issue is **thread safety**. A standard `HashMap` inside a Singleton **would not be thread-safe**, meaning we would need additional synchronization mechanisms like `RwLock<HashMap<...>>` or `Mutex<HashMap<...>>`. These would introduce locking overhead and potential deadlocks in concurrent scenarios.  
+
+**DashMap is already a concurrent-safe HashMap, removing the need for manual locks.** It provides:  
+- **Fine-grained locking**, reducing contention between threads.  
+- **Better performance** compared to using a `Mutex<HashMap<...>>` manually.  
+- **Built-in support for multi-threaded operations.**  
+
+Thus, while we **could** implement a Singleton manually, **DashMap already provides all the benefits of Singleton while also being optimized for concurrency**. Keeping DashMap is the better design choice.  
+
 #### Reflection Publisher-2
 
 #### Reflection Publisher-3
