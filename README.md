@@ -137,3 +137,27 @@ For our **BambangShop** project, Postman helps us quickly test **notification su
 In future projects, Postman will be beneficial for **CI/CD pipelines**, **performance testing**, and **collaboration in API development**.  
 
 #### Reflection Publisher-3
+
+##### 1. Observer Pattern Variation Used  
+In this tutorial, we use the **Push model** of the Observer Pattern. The publisher (our system) actively **sends notifications** to subscribers when an event occurs, rather than waiting for subscribers to request updates.  
+
+##### 2. Advantages and Disadvantages of Using the Pull Model  
+If we were to use the **Pull model**, where subscribers fetch data from the publisher instead of receiving updates automatically, the system would behave differently:  
+
+- **Advantages of Pull Model:**  
+  - Reduces unnecessary updates if subscribers only need data occasionally.  
+  - Subscribers have more control over when and how they retrieve information.  
+
+- **Disadvantages of Pull Model:**  
+  - Increases complexity because subscribers must regularly check for updates.  
+  - Can introduce delays if a subscriber does not check frequently enough.  
+  - Higher network/resource usage if polling happens too often.  
+
+##### 3. Impact of Removing Multi-threading in Notifications  
+If we **do not use multi-threading** in the notification process, several issues may arise:  
+
+- **Slower notifications:** Since each subscriber would be notified sequentially, a slow network or unresponsive subscriber could delay notifications to others.  
+- **Blocking operations:** The main application could become unresponsive while waiting for notifications to complete.  
+- **Reduced scalability:** Handling multiple subscribers would become inefficient as the number of subscribers grows.  
+
+By using **multi-threading**, notifications can be sent concurrently, improving performance and system responsiveness.  
