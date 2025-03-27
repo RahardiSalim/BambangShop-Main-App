@@ -107,4 +107,33 @@ Thus, while we **could** implement a Singleton manually, **DashMap already provi
 
 #### Reflection Publisher-2
 
+##### 1. Why do we separate “Service” and “Repository” from a Model?  
+In traditional **Model-View-Controller (MVC)**, the **Model** is responsible for both business logic and data storage. However, following **Separation of Concerns (SoC)** and **Single Responsibility Principle (SRP)**, it is beneficial to separate the **Service** and **Repository** layers:  
+
+- **Service Layer**: Handles business logic, ensuring that rules, validations, and processing are centralized rather than being scattered in the Model.  
+- **Repository Layer**: Abstracts data persistence and retrieval, enabling easier database switching and reducing code duplication.  
+
+This separation provides better maintainability, testability, and modularity, making our codebase **scalable and easier to extend**.  
+
+##### 2. What happens if we only use the Model?  
+If we **only use the Model**, several problems arise:  
+
+- **Tightly Coupled Code**: The **Program**, **Subscriber**, and **Notification** models would need to communicate directly, leading to **interdependent logic** that is hard to maintain.  
+- **Increased Complexity**: Without a **Service** layer, each Model would need to handle its own business rules, making modifications or adding new features cumbersome.  
+- **Difficult Unit Testing**: Business logic would be mixed with data access, making it difficult to write **isolated unit tests**.  
+
+For example, if the **Notification** model directly manages subscriptions and data persistence, updating how notifications work would require modifying multiple parts of the Model. This creates a **ripple effect** that increases the risk of **breaking existing functionality**.  
+
+##### 3. How does Postman help in testing our work?  
+Postman is an essential tool for testing **RESTful APIs**. It allows us to **send HTTP requests**, verify responses, and automate tests. Some useful features:  
+
+- **Request Collections**: Organizing API endpoints for structured testing.  
+- **Environment Variables**: Managing different configurations (e.g., dev, staging, production).  
+- **Automated Testing with Scripts**: Writing test assertions to verify API responses.  
+- **Mock Servers**: Simulating API responses without a live backend.  
+
+For our **BambangShop** project, Postman helps us quickly test **notification subscriptions**, **API routes**, and **error handling** before integrating with the frontend. This reduces debugging time and ensures a smoother development process.  
+
+In future projects, Postman will be beneficial for **CI/CD pipelines**, **performance testing**, and **collaboration in API development**.  
+
 #### Reflection Publisher-3
