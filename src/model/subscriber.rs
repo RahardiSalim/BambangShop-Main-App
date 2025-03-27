@@ -1,5 +1,5 @@
 use rocket::serde::{Deserialize, Serialize};
-use rocket::log;
+use rocket::log::warn_;
 use rocket::serde::json::to_string;
 use rocket::tokio;
 use bambangshop::REQWEST_CLIENT;
@@ -20,7 +20,7 @@ impl Subscriber {
             .header("Content-Type", "JSON")
             .body(to_string(&payload).unwrap())
             .send().await.ok();
-        Log::warn!("Sent {} notification of: [{}] to: {}", 
+        warn_!("Sent {} notification of: [{}] to: {} at {}",
             payload.status, payload.product_type, payload.product_title, self.url);
     }
 }
